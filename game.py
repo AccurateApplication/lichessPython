@@ -31,12 +31,11 @@ class Game:
         self.stream = self.api.stream_board_state(self.game_id)
         self.tui = terminal.GameUi(config=self.config, stream=self.stream, game_id=self.game_id, api=self.api)
 
-        #terminal.play_game(stream)
-
     def play(self):
         self.tui.start()
+    
 
-game_id = "xR4cjoQy"
+game_id = "WGCTQVb7"
 game = Game(game_id)
 game.play()
 

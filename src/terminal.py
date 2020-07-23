@@ -53,9 +53,6 @@ class GameUi:
         with term.cbreak():
             from_pos = 0
             to_pos = 0
-            #new_moves =  'e2e3 e7e5 d2d3 c7c5 c2c3 g8f6 f2f3 b8c6 f3f4 e5f4'
-            #latest_moves =  'e2e3 e7e5 d2d3 c7c5 c2c3 g8f6 f2f3 b8c6 f3f4 e5f4'
-            #c_x,c_y = (0,0)
             latest_moves = ""
             last_board = chess.new_board()
             _thread.start_new_thread(self.handle_player,())
@@ -63,9 +60,6 @@ class GameUi:
                 if line:
                     info("start of upadiasdu")
                     event = json.loads(line)
-            #        pprint(event)
-            #        print(event["state"]["moves"])
-            #        time.sleep(0.5)
                     try:
                         new_moves = event["moves"]
                     except KeyError:
@@ -110,16 +104,3 @@ def print_board(state):
         if piece == "":
              piece = "."
         draw_piece(pos,piece) 
-
-
-
-def make_moves(move_list,current_state):
-    statemap = chess.new_board()
-    for move in move_list.split():
-        from_pos = move[0:2]
-        to_pos = move[2:4]
-
-        statemap = chess.move_piece(statemap,from_pos,to_pos)
-        if statemap != current_state:
-            print_board(statemap)
-
