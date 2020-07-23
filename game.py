@@ -7,15 +7,42 @@ import src.terminal as terminal
 import src.api as api
 from blessed import Terminal
 import time
-#test_moves =  'e2e3 e7e5 d2d3 c7c5 c2c3 g8f6 f2f3 b8c6 f3f4 e5f4'
-logging.basicConfig(level=logging.DEBUG,filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-LICHESS_API_KEY = environ["LICHESS_API_KEY"]
-live_game_id = "iLmvOgQ4"
-stream = api.stream_board_state(live_game_id, LICHESS_API_KEY)
-info("test")
+import configparser
+import confire
+import sys
+import  os
+import subprocess
+
+from src.config import configuration
+#cfg = configuration()
+
+#print(cfg)
+
+#sys.exit(1)
+
+class Game:
+    def __init__(self, game_id):
+        self.game_id = game_id
+        logging.basicConfig(level=logging.DEBUG,filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+
+        self.config = configuration()
+        self.api = api.Api(api_key=self.config.lichess.api_key)
+        self.stream = self.api.stream_board_state(self.game_id)
+        self.tui = terminal.GameUi(config=self.config, stream=self.stream, game_id=self.game_id, api=self.api)
+
+        #terminal.play_game(stream)
+
+    def play(self):
+        self.tui.start()
+
+game_id = "xR4cjoQy"
+game = Game(game_id)
+game.play()
+
+
+
 
 #response = api.make_board_move("eFgl5mHdDWHI",LICHESS_API_KEY,"b1c3")
-terminal.play_game(stream)
 
 
 #print(response.text)
@@ -34,7 +61,7 @@ terminal.play_game(stream)
 #        finally:
 #            terminal.make_moves(moves,last_board)
 #           # print(moves)
-lines = stream.iter_lines(decode_unicode=True)
-l1 = next(lines)
-print(l1)
+#lines = stream.iter_lines(decode_unicode=True)
+#l1 = next(lines)
+#print(l1)
 #print(line)
