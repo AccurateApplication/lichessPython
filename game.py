@@ -1,3 +1,4 @@
+#!/usr/bin/env python 
 from pprint import pprint
 import logging
 from logging import info, error
