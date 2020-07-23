@@ -23,7 +23,7 @@ _edit .env with your own settings_
 
 ###### __Start game__
 ```
-pipenv run game_with_env <game_id>
+pipenv run play_game_with_env <game_id>
 ```
 
 
@@ -38,5 +38,5 @@ _edit config.yml and set either and set either:_ `api_key_cmd` _or_ `api_key`.
 
 ###### __Start game__
 ```
-pipenv run game <game_id>
+pipenv run play_game <game_id>
 ```

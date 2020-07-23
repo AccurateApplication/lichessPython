@@ -1,5 +1,0 @@
-#!/bin/sh
-
-source ./.env
-#env | grep -i lichess
-python game.py

@@ -1,6 +1,6 @@
 #!/usr/bin/env python 
 import sys
-from src import Game
+from src.game import Game
 
 
 if __name__ == "__main__":
