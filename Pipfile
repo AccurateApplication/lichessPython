@@ -16,4 +16,4 @@ python_version = "3.8"
 [scripts]
 game = "python game.py"
 
-game_env = "$SHELL -c 'source .env && python game.py'"
+game_with_env = "$SHELL -c 'source .env && python game.py'"

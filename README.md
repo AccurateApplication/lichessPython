@@ -1,9 +1,42 @@
-## To be able to play lichess in the terminal you will need to create an API key [here](https://lichess.org/account/oauth/token) 
+# Lichess Terminal Client
 
-To be able to play using this program you will first have to create an API [here](https://lichess.org/account/oauth/token)
+## Setup
+### Token setup
+To be able to play lichess in the terminal you will need to create an API key [here](https://lichess.org/account/oauth/token) 
 
-When you have your api key an option is to create a pass entry and export it as done in [.env.example file](.env.example)
 
-For now you will have to put the game id into both [game.py](game.py) (line 13) and [src/terminal.py](/src/terminal.py) (line 11) once that is done you will be able to launch game.py.
+### Keybindigs
 
-While in game you can move around your cursor using vim-bindings (hjkl). To move a piece you select the piece you want to move using "c", select which square you want to move to using "x" and make the move using "m"
+While in game you can move around your cursor using vim-bindings hjkl. To move a piece you select the piece you want to move using "c", select which square you want to move to using "x" and make the move using "m"
+
+
+### Running a game
+##### Run game with env variables
+
+###### __Create .env file__
+
+```
+cp .env.example .env
+```
+
+_edit .env with your own settings_
+
+###### __Start game__
+```
+pipenv run game_with_env <game_id>
+```
+
+
+##### Run game with config file
+
+###### __Create configuration file__
+```
+cp config.yml.example config.yml
+
+```
+_edit config.yml and set either and set either:_ `api_key_cmd` _or_ `api_key`.
+
+###### __Start game__
+```
+pipenv run game <game_id>
+```
