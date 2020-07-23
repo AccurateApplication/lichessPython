@@ -1,5 +1,0 @@
-lichess:
-  #api_key: tes
-  api_key_cmd: gopass i/api/lichess.org
-#[api]
-#password_cmd = gopass i/api/lichess.org
