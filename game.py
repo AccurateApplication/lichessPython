@@ -3,8 +3,8 @@ import logging
 from logging import info, error
 import json
 from os import environ
-import terminal
-import api
+import src.terminal as terminal
+import src.api as api
 from blessed import Terminal
 import time
 #test_moves =  'e2e3 e7e5 d2d3 c7c5 c2c3 g8f6 f2f3 b8c6 f3f4 e5f4'
