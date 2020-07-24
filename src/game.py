@@ -8,7 +8,6 @@ class Game:
     def __init__(self, game_id):
         self.game_id = game_id
         logging.basicConfig(level=logging.DEBUG,filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-
         self.config = configuration()
         self.api = api.Api(api_key=self.config.lichess.api_key)
         self.stream = self.api.stream_board_state(self.game_id)
