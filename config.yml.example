@@ -1,5 +1,0 @@
-lichess:
-  # Non preffered method: api key in plain text
-  #api_key: "my_personal_api_key_here"
-  # Preferred method: command that gives the api key as output
-  api_key_cmd: pass show api/lichess.org

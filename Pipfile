@@ -6,11 +6,10 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pyyaml = "*"
 blessed = "*"
 requests = "*"
 ndjson = "*"
-wheel = "*"
+dynaconf = "*"
 
 [requires]
 python_version = "3.8"

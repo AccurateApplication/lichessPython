@@ -10,33 +10,33 @@ To be able to play lichess in the terminal you will need to create an API key [h
 While in game you can move around your cursor using vim-bindings hjkl. To move a piece you select the piece you want to move using "c", select which square you want to move to using "x" and make the move using "m"
 
 
-### Running a game
-##### Run game with env variables
+### Configuring
 
-###### __Create .env file__
-
-```
+#### Using .env file
+*Copy .env from example:*
+```shell
 cp .env.example .env
 ```
 
-_edit .env with your own settings_
+*Fill in your own configuration in* `.env`.
 
-###### __Start game__
+#### Using environment variable
+*Set the variable `TCHESS_LICHESS__API_KEY`:*
+```shell
+export TCHESS_LICHESS__API_KEY=$(pass show api/lichess.org) # or just enter a plain text api key.
 ```
-pipenv run play_game_with_env <game_id>
+
+#### Using config file:
+*Copy settings.toml from example:*
+```
+cp settings.toml.example settings.toml
 ```
 
+*Fill in your own configuration in* `settings.toml`.
 
-##### Run game with config file
 
-###### __Create configuration file__
-```
-cp config.yml.example config.yml
 
-```
-_edit config.yml and set either and set either:_ `api_key_cmd` _or_ `api_key`.
-
-###### __Start game__
+### Start game
 ```
 pipenv run play_game <game_id>
 ```

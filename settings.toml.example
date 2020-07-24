@@ -1,7 +1,9 @@
+[lichess]
+
 # Choose a method of supplying your api key, either by a command or as plain text.
 
 # Non preffered method: api key in plain text
-#LICHESS_API_KEY=<my api key>
+# api_key = "my_personal_api_key_here"
 
 # Preferred method: command that gives the api key as output
-TCHESS_LICHESS__API_KEY_CMD=pass show api/lichess.org
+api_key_cmd = "pass show api/lichess.org"

@@ -1,50 +1,35 @@
-import os
 import subprocess
 import configparser
+import sys
+from dynaconf import Dynaconf,Validator
 
-#class LichessConfiguration(Configuration):
-#    api_key = environ_setting("LICHESS_API_KEY", default=None, required=False)
-#    api_key_cmd = None
-#
-#
-#    
-#class ChessConfiguration(Configuration):
-#    lichess = LichessConfiguration()
-#    CONF_PATHS = [
-#        os.path.abspath("config.yml")
-#    ]
-#
-class LichessConfig:
-    def __init__(self,api_key=None,api_key_cmd=None):
-        api_key = get_env_or_fallback("LICHESS_API_KEY")
-        if api_key_cmd and not api_key:
-            output = run_command(api_key_cmd)
-            self.api_key = output
-        else:
-            self.api_key = api_key
 
-def get_env_or_fallback(env,fallback=None):
+def pass_cmd(command_str):
     try:
-        return os.environ[env]
-    except KeyError:
-        return fallback
-
-
-class Configuration:
-    def __init__(self):
-        config = configparser.ConfigParser()
-        config.read('config.ini')
-        api_key = config["lichess"].get("api_key")
-        api_key_cmd = config["lichess"].get("api_key_cmd")
-        self.lichess = LichessConfig(api_key,api_key_cmd)
-        pass
-
-def run_command(command_str):
-    output = subprocess.check_output(command_str.split())
-    return output.decode().strip()
+        
+        output = subprocess.check_output(command_str.split())
+        return output.decode().strip()
+    except Exception as e:
+        print(f"ERROR! Failed to run api_key_cmd:\n{e}")
+        sys.exit(1)
 
 
 def configuration():
-    config = Configuration()
 
-    return config
+    settings = Dynaconf(
+        envvar_prefix="TCHESS",
+        settings_files=['settings.toml'],
+        load_dotenv=True,
+        validators = [
+            Validator('LICHESS.API_KEY', must_exist=True) | Validator('LICHESS.API_KEY_CMD', must_exist=True),
+
+        ]
+
+    )
+    settings.validators.validate()
+
+    if settings.lichess.get("api_key_cmd") and not settings.lichess.get("api_key"):
+        settings.lichess.api_key = pass_cmd(settings.lichess.api_key_cmd)
+        
+
+    return settings
