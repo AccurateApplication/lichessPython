@@ -62,14 +62,15 @@ class GameUi:
                     event = json.loads(line)
                     try:
                         new_moves = event["moves"]
+                        new_statemaps = chess.step_moves(latest_moves, new_moves)
                     except KeyError:
                         #pprint(event)
                         new_moves = event["state"]["moves"]
-                    finally:
+                        #latest_moves = chess.new_board()
                         new_statemaps = chess.step_moves(latest_moves, new_moves)
-                        for statemap in new_statemaps:
-                            print_board(statemap)
-    
+
+                    for statemap in new_statemaps:
+                        print_board(statemap)
 
 def echo(text):
 
@@ -77,30 +78,38 @@ def echo(text):
     sys.stdout.write(u'{0}'.format(text))
     sys.stdout.flush()
 
+#    matrix = {
+#            "p":"♙  ",
+#            "n":"♘  ",
+#            "k":"♔  ",
+#            "q":"♕  ",
+#            "b":"♗  ",
+#            "r":"♖  "
+#
+            #} 
 def draw_piece(position, piece):
     x,y = chess.convert_pos(position)
     matrix = {
-            "p":"♙  ",
-            "n":"♘  ",
-            "k":"♔  ",
-            "q":"♕  ",
-            "b":"♗  ",
-            "r":"♖  "
+            "p":"p  ",
+            "n":"n  ",
+            "k":"k  ",
+            "q":"q  ",
+            "b":"b  ",
+            "r":"r  "
 
             } 
     try:
-        piece = matrix[piece]
+        piece = matrix[piece.variant]
     except KeyError:
         piece=".  "
 
     with term.location(x,y):
         print(piece)
-
-
-
 def print_board(state):
     print(term.black_on_olivedrab4 + term.clear)
     for pos,piece in state.items():
-        if piece == "":
-             piece = "."
         draw_piece(pos,piece) 
+
+
+
+
