@@ -10,6 +10,9 @@ import sys
 term = Terminal()
 
 
+def draw():
+    pass
+
 class GameUi:
     def __init__(self, config, stream, game_id, api):
         self.config = config
@@ -54,12 +57,13 @@ class GameUi:
             from_pos = 0
             to_pos = 0
             latest_moves = ""
-            last_board = chess.new_board()
+            last_board = chess.Board()
             _thread.start_new_thread(self.handle_player,())
             for line in self.stream.iter_lines(decode_unicode=True):
                 if line:
-                    info("start of upadiasdu")
+                    
                     event = json.loads(line)
+                    #print(event)
                     try:
                         new_moves = event["moves"]
                         new_statemaps = chess.step_moves(latest_moves, new_moves)
@@ -70,7 +74,8 @@ class GameUi:
                         new_statemaps = chess.step_moves(latest_moves, new_moves)
 
                     for statemap in new_statemaps:
-                        print_board(statemap)
+                        statemap.print_board(term)
+                        #print_board(statemap)
 
 def echo(text):
 
@@ -87,28 +92,28 @@ def echo(text):
 #            "r":"♖  "
 #
             #} 
-def draw_piece(position, piece):
-    x,y = chess.convert_pos(position)
-    matrix = {
-            "p":"p  ",
-            "n":"n  ",
-            "k":"k  ",
-            "q":"q  ",
-            "b":"b  ",
-            "r":"r  "
+#def draw_piece(position, piece):
+#    x,y = chess.convert_pos(position)
+#    matrix = {
+#            "p":"p  ",
+#            "n":"n  ",
+#            "k":"k  ",
+#            "q":"q  ",
+#            "b":"b  ",
+#            "r":"r  "
+#
+#            } 
+#    try:
+#        piece = matrix[piece.variant]
+#    except KeyError:
+#        piece=".  "
 
-            } 
-    try:
-        piece = matrix[piece.variant]
-    except KeyError:
-        piece=".  "
-
-    with term.location(x,y):
-        print(piece)
+   # with term.location(x,y):
+   #     print(piece)
 def print_board(state):
-    print(term.black_on_olivedrab4 + term.clear)
-    for pos,piece in state.items():
-        draw_piece(pos,piece) 
+    print(term.white_on_black + term.clear)
+    for piece in state.board:
+        draw_piece(piece.to_pos(),piece.variant) 
 
 
 
