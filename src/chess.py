@@ -32,6 +32,11 @@ class Board:
                 self.board.append(Piece(side, "p", col=col, row=front))
                 self.board.append(Piece(side, BOARD_BACK_ROW_PIECES[col_i], col=col, row=back))
 
+    @staticmethod
+    def from_xy(x,y):
+        row = (8, 7, 6, 5, 4, 3, 2, 1)
+        nx,ny = BOARD_COLS[x],row[y]
+        return f"{nx}{ny}"
     def find(self, key):
         """Get the Piece that matches key."""
         for piece in self.board:
@@ -136,7 +141,7 @@ class Piece:
 
     def __repr__(self):
         """How to display Piece when printed or logged. """
-        return f"{self.col}{self.row} -> {self.side} -> {self.variant}\n"
+        return f"{self.col}{self.row}"
 
     def to_pos(self):
         """Format col and row into a chess position"""
@@ -179,33 +184,33 @@ class Piece:
         """Create a piece that is empty"""
         return Piece(None, None, pos=pos)
 
-def xy_to_chess_pos(x,y):
-    info("inside chess pos" )
-    info((x,y))
-    matrix = {"x": 
-            {
-                "0":"a",
-                "1":"b",
-                "2":"c",
-                "3":"d",
-                "4":"e",
-                "5":"f",
-                "6":"g",
-                "7":"h"
-                },
-            "y":{
+#def xy_to_chess_pos(x,y):
+    #info("inside chess pos" )
+    #info((x,y))
+    #matrix = {"x": 
+    #        {
+    #            "0":"a",
+    #            "1":"b",
+    #            "2":"c",
+    #            "3":"d",
+    #            "4":"e",
+    #            "5":"f",
+    #            "6":"g",
+    #            "7":"h"
+    #            },
+    #        "y":{
 
-                "7":"1",
-                "6":"2",
-                "5":"3",
-                "4":"4",
-                "3":"5",
-                "2":"6",
-                "1":"7",
-                "0":"8"
-                }
-            }
+    #            "7":"1",
+    #            "6":"2",
+    #            "5":"3",
+    #            "4":"4",
+    #            "3":"5",
+    #            "2":"6",
+    #            "1":"7",
+    #            "0":"8"
+    #            }
+    #        }
 
-    nx,ny = (matrix["x"][str(x)], matrix["y"][str(y)])
-    info((nx,ny))
-    return f"{nx}{ny}"
+    #nx,ny = (matrix["x"][str(x)], matrix["y"][str(y)])
+    #info((nx,ny))
+    #return f"{nx}{ny}"

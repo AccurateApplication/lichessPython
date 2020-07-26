@@ -59,12 +59,16 @@ class GameUi:
                 self.left()
             elif val == u"x":
                 x,y = self.x,self.y
-                from_pos = chess.xy_to_chess_pos(x,y)
+                #from_pos = chess.xy_to_chess_pos(x,y)
+                from_pos = chess.Board.from_xy(x,y)
+                #from_pos = chess.xy_to_chess_pos(x,y)
             elif val == u"c":
                 x,y = self.x,self.y
-                to_pos = chess.xy_to_chess_pos(x,y)
+                to_pos = chess.Board.from_xy(x,y)
+                #to_pos = chess.xy_to_chess_pos(x,y)
             elif val == u"m":
                 move = f"{from_pos}{to_pos}"
+                info(move)
                 r = self.api.make_board_move(self.game_id,move)
                 info((r.text,r.status_code))
                 info(move)
