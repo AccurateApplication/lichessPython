@@ -24,36 +24,36 @@ class GameUi:
         from_pos = 0
         to_pos = 0
         while True :
-            with term.cbreak():
-                info("click now idiot!!!")
-                val = term.inkey(timeout=3)
-                if val == u"j":
-                    info("down")
-                    #term.move_xy(x,y-1)
-                    echo(term.move_down(1))
+            #with term.cbreak():
+            info("click now idiot!!!")
+            val = term.inkey(timeout=3)
+            if val == u"j":
+                info("down")
+                #term.move_xy(x,y-1)
+                echo(term.move_down(1))
     
-                elif val == u"k":
-                    echo(term.move_up(1))
-                    info("up is the only way")
-                elif val == u"l":
-                    echo(term.move_right(1))
-                    info("rightis the only way")
-                elif val == u"h":
-                    echo(term.move_left(1))
-                    info("leftis the only way")
-                elif val == u"x":
-                    from_pos = chess.yx_to_chess_pos(term.get_location(timeout=0.1))
-                elif val == u"c":
-                    to_pos = chess.yx_to_chess_pos(term.get_location(timeout=0.1))
-                elif val == u"m":
-                    move = f"{from_pos}{to_pos}"
-                    r = self.api.make_board_move(self.game_id,move)
-                    info((r.text,r.status_code))
-                    info(move)
-                info("wait now idiot!!!")
+            elif val == u"k":
+                echo(term.move_up(1))
+                info("up is the only way")
+            elif val == u"l":
+                echo(term.move_right(1))
+                info("rightis the only way")
+            elif val == u"h":
+                echo(term.move_left(1))
+                info("leftis the only way")
+            elif val == u"x":
+                from_pos = chess.yx_to_chess_pos(term.get_location(timeout=0.1))
+            elif val == u"c":
+                to_pos = chess.yx_to_chess_pos(term.get_location(timeout=0.1))
+            elif val == u"m":
+                move = f"{from_pos}{to_pos}"
+                r = self.api.make_board_move(self.game_id,move)
+                info((r.text,r.status_code))
+                info(move)
+            info("wait now idiot!!!")
     def start(self):
     
-        with term.cbreak():
+        with  term.fullscreen(),term.cbreak():
             from_pos = 0
             to_pos = 0
             latest_moves = ""
@@ -83,13 +83,6 @@ def echo(text):
     sys.stdout.write(u'{0}'.format(text))
     sys.stdout.flush()
 
-#    matrix = {
-#            "p":"♙  ",
-#            "n":"♘  ",
-#            "k":"♔  ",
-#            "q":"♕  ",
-#            "b":"♗  ",
-#            "r":"♖  "
 #
             #} 
 #def draw_piece(position, piece):

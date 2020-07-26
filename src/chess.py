@@ -1,12 +1,10 @@
 import src.terminal as terminal
 #from blessed import Terminal
 
-#term = Terminal()
 BOARD_BACK_ROW_PIECES = ("r","n","b","q","k","b","n","r")
 BOARD_ROWS = (1, 2, 3, 4, 5, 6, 7, 8)
 BOARD_COLS = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
 BOARD_POSITIONS = tuple(f"{col}{row}" for row in BOARD_ROWS for col in BOARD_COLS)
-#print(BOARD_POSITIONS)
 
 
 def yx_to_chess_pos(pos):
@@ -52,92 +50,76 @@ def step_moves(current_move_list, new_move_list):
             new_statemaps.append(statemap)
     return new_statemaps
 
-
-def row_range():
-    """  generates row numbers """
-    for i in range (1,8+1):
-        yield i
-
-def col_range():
-    for c in range(ord("a"), ord("h")+1):
-        yield chr(c)
-
 class Board:
     def __init__(self):
         self.board = []
         for side, front, back in (("white", 2, 1), ("black", 7, 8)):
             for col_i, col in enumerate(BOARD_COLS):
-                self.board.append(Piece(side, "p", col, front))
-                self.board.append(Piece(side, BOARD_BACK_ROW_PIECES[col_i], col, back))
+                self.board.append(Piece(side, "p", col=col, row=front))
+                self.board.append(Piece(side, BOARD_BACK_ROW_PIECES[col_i], col=col, row=back))
 
     def find(self, key):
+        """Get the Piece that matches key."""
         for piece in self.board:
             if key == piece.to_pos():
                 return piece
-        
-        raise KeyError(f"Index Not Found: {key} ")
+        raise KeyError(f"Key Not Found: {key}")
 
     def index(self, key):
-        #print(self.board)
+        """Get the index that matches key."""
         for i, piece in enumerate(self.board):
-            #print(key, piece.to_pos())
             if key == piece.to_pos():
                 return i
-        raise KeyError(f"Index Not Found: {key} ")
+        raise KeyError(f"Key Not Found: {key}")
 
     def __getitem__(self, key):
+        """Implement dictionary get functionality"""
         return self.find(key)
 
     def __setitem__(self, key, value):
+        """Implement dictionary set functionality"""
         side, variant = value
         try:
-            i = self.index(key)
-            self.board.append(Piece(side, variant, pos=key))
+            self.board[self.index(key)] = (Piece(side, variant, pos=key))
         except KeyError:
             self.board.append(Piece(side, variant, pos=key))
 
     def __repr__(self):
+        """How to display Board when printed or logged. """
         return str(self.board)
 
     def __delitem__(self,key):
+        """Implement dictionary del functionality"""
         del self.board[self.index(key)]
 
     def pop(self,key):
         return self.board.pop(self.index(key))
 
     def move_piece(self, from_pos, to_pos):
+        """Move a piece"""
+        # Get index and piece to move
         i, piece = self.index(from_pos), self.find(from_pos)
-        #print(self.board)
+
+        # Update coordinates
         piece.from_pos(to_pos)
-        self.board.append(piece)
-        del self.board[i]
+
+        # Replace piece
+        self.board[i] = piece
 
     def print_board(self, terminal):
+        """Print the game board."""
+        # Clear screen and set background
+        print(terminal.red_on_gainsboro + terminal.clear)
+        #print(terminal.red_on_gray + terminal.clear)
 
-        print(terminal.white_on_black + terminal.clear)
+        # Loop every possible board position
         for pos in BOARD_POSITIONS:
             try:
-                p = self.find(pos)
-                #print(f"pos: {pos} p: {p}")
-                p.draw(terminal)
-                #self.find(pos).draw(terminal)
-                #print(pos, piece.variant)
+                # If positon exists draw the piece.
+                p = self.find(pos).draw(terminal)
             except KeyError:
-                p = Piece.empty_space(pos)
-                #print(f"pos: {pos} p: {p}")
-                p.draw(terminal)
-                #print(pos, ".")
-                #print("ERRORED KEYS LOL")
-                
-
-    def draw(self):
-        pass 
-        #for i
-
-
-
- 
-
+                # Otherwise draw an empty space
+                p = Piece.empty_space(pos).draw(terminal)
 
 class Piece:
     def __init__(self,side, variant, col=None, row=None, pos=None):
@@ -149,44 +131,43 @@ class Piece:
         elif pos:
             self.col = pos[0]
             self.row = pos[1]
-        #elif x and y:
-        #    self.col = None
-        #    self.row = None
-        #elif yx:
-        #    self.col = None
-        #    self.row = None
         else:
             self.col = None
             self.row = None
 
-
-
     def from_pos(self, pos):
+        """Update col, row from input pos"""
         col, row = list(pos)
         self.row = row
         self.col = col
 
-
-
-
     def to_x(self):
+        """Get termial x position from col"""
+
         return BOARD_COLS.index(self.col)
 
     def to_y(self):
-        return BOARD_ROWS[::-1][int(self.row)-1]
+        """Get termial y position from row"""
 
-    def to_xy(self):
-        return self.to_x(), self.to_y()
+        # Reverse tuple and get the value of the row. The -1 is because the row starts at 1 but the tuple at 0.
+        return BOARD_ROWS[::-1][int(self.row)-1]-1
 
-    def to_yx(self):
-        return self.to_y(), self.to_x()
+    #def to_xy(self):
+        #return self.to_x(), self.to_y()
+
+    #def to_yx(self):
+        #return self.to_y(), self.to_x()
 
     def __repr__(self):
+        """How to display Piece when printed or logged. """
         return f"{self.col}{self.row} -> {self.side} -> {self.variant}\n"
 
     def to_pos(self):
+        """Format col and row into a chess position"""
         return f"{self.col}{self.row}"
+
     def draw(self, terminal):
+        """Draw piece"""
         matrix = {
             "p":"p  ",
             "n":"n  ",
@@ -196,29 +177,24 @@ class Piece:
             "r":"r  "
 
         } 
+        
         try:
-            piece = matrix[self.variant]
+            piece=matrix[self.variant]
         except KeyError:
             piece=".  "
 
         with terminal.location(self.to_x(),self.to_y()):
-            print(piece)
-        #print(self.to_pos(), piece)
+            if self.side == "white":
+                print(terminal.aquamarine3(piece))
+                # springgreen palegreen gray white 
+            elif self.side == "black":
+                print(terminal.seagreen(piece))
+                # mediumseagreen darkgreen black
+            else:
+                print(piece)
+                    
 
     @staticmethod
     def empty_space(pos):
+        """Create a piece that is empty"""
         return Piece(None, None, pos=pos)
-
-
-        
-#def new_board():
-#    board = {
-#            }
-#    for side,front_row, back_row in [("black",7,8),("white",2,1)]:
-#        for pos in row_positions(front_row):
-#            board[pos] = Piece(side,"p", pos)
-#        back_row_pieces = ["r","n","b","q","k","b","n","r"]
-#        for piece,pos in zip(back_row_pieces,row_positions(back_row)):
-#            board[pos] = Piece(side,piece)
-#
-#    return board
