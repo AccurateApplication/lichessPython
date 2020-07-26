@@ -1,5 +1,4 @@
 import src.terminal as terminal
-from logging import info
 #from blessed import Terminal
 
 BOARD_BACK_ROW_PIECES = ("r","n","b","q","k","b","n","r")
@@ -179,9 +178,8 @@ class Piece:
         """Create a piece that is empty"""
         return Piece(None, None, pos=pos)
 
-def xy_to_chess_pos(x,y):
-    info("inside chess pos" )
-    info((x,y))
+def yx_to_chess_pos(pos):
+    y,x = pos
     matrix = {"x": 
             {
                 "0":"a",
@@ -205,7 +203,5 @@ def xy_to_chess_pos(x,y):
                 "0":"8"
                 }
             }
-
     nx,ny = (matrix["x"][str(x)], matrix["y"][str(y)])
-    info((nx,ny))
     return f"{nx}{ny}"

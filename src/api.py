@@ -14,3 +14,7 @@ class Api:
         headers = {"Authorization": f"Bearer {self.api_key}"}
         return requests.post(f'https://lichess.org/api/board/game/{game_id}/move/{move}', headers=headers)
 
+    def get_profile(self):
+        headers = {"Authorization": f"Bearer {self.api_key}"}
+        return requests.get(f'https://lichess.org/api/account', headers=headers)
+
